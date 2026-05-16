@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # llama.cpp Server with GGUF quantized Gemma 4 31B Instruct
+  # Single-model backbone for Medigent One.
+  llamacpp:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda
+    container_name: gemma4-llamacpp
+    ports:
+      - "8080:8000"
+    volumes:
+      - ./models:/models
+    command: >
+      --host 0.0.0.0
+      --port 8000
+      --model /models/gemma-4-31b-it-Q4_K_M.gguf
+      --ctx-size 128000
+      --n-gpu-layers 99
+      --threads 8
+      --parallel 4
+      --batch-size 512
+      --ubatch-size 512
+      --metrics
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - gemma4-network
+
+  # Cloudflare Tunnel for llama.cpp API
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflare-tunnel
+    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+    restart: unless-stopped
+    depends_on:
+      - llamacpp
+    networks:
+      - gemma4-network
+    environment:
+      - TUNNEL_METRICS=0.0.0.0:45678
+
+networks:
+  gemma4-network:
+    driver: bridge
