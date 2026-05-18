@@ -484,11 +484,23 @@ export function useSSEHandler(options: SSEHandlerOptions = {}) {
   }
 
   function handleNotice(data: SSENoticeEvent['data']) {
+    // Drop empty / null-stringified notices (Python None serialized as "None",
+    // empty string, or whitespace-only payloads should not pollute the UI).
+    const noticeText = (data.notice ?? '').toString().trim();
+    if (
+      !noticeText ||
+      noticeText === 'None' ||
+      noticeText.toLowerCase() === 'null' ||
+      noticeText.toLowerCase() === 'undefined'
+    ) {
+      return;
+    }
+
     // Add as chat message and persist to project
     addMessageAndPersist({
       id: `notice-${Date.now()}`,
       role: 'system',
-      content: data.notice,
+      content: noticeText,
       timestamp: new Date().toISOString(),
     });
 
@@ -499,7 +511,7 @@ export function useSSEHandler(options: SSEHandlerOptions = {}) {
       if (agent && agent.currentTaskId === data.process_task_id) {
         useAgentStatusStore
           .getState()
-          .addAgentActivity(agentName, 'notice', data.notice);
+          .addAgentActivity(agentName, 'notice', noticeText);
         break;
       }
     }

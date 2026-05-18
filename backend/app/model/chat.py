@@ -117,7 +117,7 @@ class Chat(BaseModel):
     api_key: str = ""
     # for cloud version, user don't need to set api_url
     api_url: str | None = None
-    max_retries: int = 3
+    max_retries: int = 5
     installed_mcp: McpServers = {"mcpServers": {}}
     summary_prompt: str = DEFAULT_SUMMARY_PROMPT
     # Check if we need to use simulated tool calling
