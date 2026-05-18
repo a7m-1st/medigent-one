@@ -132,3 +132,5 @@ To protect sensitive agent credentials (like API keys), Medigent One uses Fernet
    ```
 
 Make sure both keys match exactly.
+
+Ahmed Awelkair, Bimo Kuncoro, Nerissa Ibrahim, Zhili Fang. Medigent One: One Model. One Panel of Specialists. For One Patient.. https://www.kaggle.com/competitions/gemma-4-good-hackathon/writeups/medigent-one-one-model-one-panel-of-specialists. 2026. Kaggle
