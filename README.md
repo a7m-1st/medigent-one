@@ -1,8 +1,8 @@
-# Medigent One — One Model. One Panel of Specialists. For One Patient.
+# Medigent One: One Model. One Panel of Specialists. For One Patient.
 
 The second coming of Medigent. Where the previous version stitched together a frontier cloud orchestrator (Gemini) and a smaller medical specialist (MedGemma), **Medigent One collapses the whole stack into a single open model: Gemma 4 31B Instruct**. One model now plays every role on the multi-agent panel — triage, clinical research, differential diagnosis, image analysis, and synthesis.
 
-<img width="1080" height="608" alt="medigent" src="https://github.com/user-attachments/assets/699f97bc-f8a9-4a90-b297-338d05c9158c" />
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/f0e29b7a-092d-4c11-93f5-51cc10d1693d" />
 
 ## Why "One"
 
